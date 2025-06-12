@@ -1,0 +1,5 @@
+-r requirements.txt
+
+fastapi[standar]
+
+pytest==8.3.5
