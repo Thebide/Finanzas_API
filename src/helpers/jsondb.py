@@ -15,4 +15,4 @@ def read_json(path: str, default_response: list | dict = {}) -> dict:
 def write_json(path: str, content: dict) -> None:
     print("🔍 DEBUG JSON:", repr(content))
     with open(path, "w") as file:
-        json.dump(content, file, ensure_ascii=False)
+        json.dump(content, file, ensure_ascii=False, indent=4)

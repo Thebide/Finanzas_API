@@ -28,7 +28,7 @@ class IncomesService():
             meta={
                 "concurrent_page": offset,
                 "items_per_page": limit,
-                "total_page": total_page,
+                "total_pages": total_page,
                 "total_items": total_item,
             }
         )

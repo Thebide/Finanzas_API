@@ -22,10 +22,10 @@ class expensescontroller():
             logger.error(f"Error en la paginación de gastos.")
             raise NotFound(message="EXPENSE_PAGE_NOT_FOUND")
         except Exception as ex:
-            logger.critical("Error no contemplado en get_paginated_expenses")
+            logger.critical(f"Error no contemplado en get_paginated_expenses. {ex}")
             raise InternalServerError(
-            message=f"Error al listar gastos",
-            exception_code='EXPENSE_UNHANDLED_ERROR'
+                message=f"Error al listar gastos",
+                exception_code='EXPENSE_UNHANDLED_ERROR'
             )
 
     async def create (self, data: NewExpensesRecuest) -> ExpensesResponse:

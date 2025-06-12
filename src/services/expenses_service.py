@@ -13,22 +13,22 @@ class ExpensesService():
         self.expense_repository = expense_repository
 
     async def get_paginated (self, offset: int, limit: int) -> ExpensesPagination:
-        logger.debug(f"Obteniendo lista de gastos paginados. Pagina:{offset} , Limite:{limit}")
-        total_item, expenses = await asyncio.gather(
-            self.__couting(),
+        logger.debug(f"Obteniendo lista de gastos paginados. Página:{offset} , Limite:{limit}")
+        expenses, total_item  = await asyncio.gather(
             self.__get_expenses_list(offset, limit),
+            self.__count(),
             )
-        total_page = (total_item // limit) + (0 if total_item % limit == 0 else 1)
-        total_page = 1 if (offset == 1 and total_item == 0) else (total_page)
-        if offset > total_page:
-            raise NotFoundError
+        total_pages = (total_item // limit) + (0 if total_item % limit == 0 else 1)
+        total_pages = 1 if (offset == 1 and total_item == 0) else total_pages
+        if offset > total_pages:
+            raise NotFoundError(f"Pagina {offset} no existe")
         logger.debug(f"Gastos obtenidos:{len(expenses)}")
-        return ExpensesPagination (
+        return ExpensesPagination(
             result=expenses,
             meta={
                 "concurrent_page": offset,
                 "items_per_page": limit,
-                "total_page": total_page,
+                "total_pages": total_pages,
                 "total_items": total_item,
             }
         )
@@ -54,13 +54,13 @@ class ExpensesService():
         return ExpensesResponse.model_validate(expense)
 
     async def delete (self, expense_id: int) -> None:
-        logger.debug(f"Eliminando gato:{expense_id}")
+        logger.debug(f"Eliminando gasto:{expense_id}")
         deleted = await self.expense_repository.delete_one({"id":expense_id})
         if not deleted:
             raise NotFoundError(f"El gasto #{expense_id} no existe")
         return None
 
-    async def __couting(self) -> int:
+    async def __count(self) -> int:
         return await self.expense_repository.count()
     
     async def __get_expenses_list(self, offset: int, limit: int) -> List[ExpensesResponse]:

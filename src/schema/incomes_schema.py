@@ -2,7 +2,7 @@ from typing import Optional,Annotated,List
 from datetime import datetime
 
 from pydantic import BaseModel, Field
-from .pagination_schema import pagination
+from .pagination_schema import Pagination
 
 class newincomes_recuest(BaseModel):
     name: str
@@ -26,4 +26,4 @@ class incomes_response(BaseModel):
 
 class incomes_pagination(BaseModel):
     result: List[incomes_response]
-    meta: pagination
+    meta: Pagination

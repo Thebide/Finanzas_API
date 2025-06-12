@@ -35,13 +35,13 @@ async def get_paginated(
                 "desciption": str,
                 "quantity": int,
                 "created": date,
-                "Update": date,
+                "update": date,
             }
             ],
         "metadata": {
             "concurrent_page": offset,
             "items_per_page": limit,
-            "total_page": int,
+            "total_pages": int,
             "total_items": int,
         }
     }
@@ -77,7 +77,7 @@ async def get_by_id(
         "desciption": str,
         "quantity": int,
         "created": date,
-        "Update": date,
+        "update": date,
     }
 
 
@@ -99,7 +99,7 @@ async def update_by_id(
         "desciption": str,
         "quantity": int,
         "created": date,
-        "Update": date,
+        "update": date,
     }
 
 
