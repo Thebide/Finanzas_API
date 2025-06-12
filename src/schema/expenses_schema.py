@@ -4,15 +4,15 @@ from datetime import date,datetime
 from pydantic import BaseModel, Field
 from .pagination_schema import pagination
 
-class newexpenses_recuest(BaseModel):
+class NewExpensesRecuest(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
     description: str = Field(..., min_length=2, max_length=100)
     quantity: float = Field(ge=1) #superior a 1
     fees : Optional[int] = 0  #cuotas
     payment_date: date 
-    estimated_next_payment_date: Optional[date] = "" 
+    estimated_next_payment_date: Optional[date] = "1999-01-01" 
 
-class update_expenses_recuest(BaseModel):
+class UpdateExpensesRecuest(BaseModel):
     name: Optional[str]
     description: Optional[str] = Field(..., min_length=2, max_length=100)
     quantity: Optional[float] = Field(ge=1) #superior a 1
@@ -20,7 +20,7 @@ class update_expenses_recuest(BaseModel):
     payment_date: Optional[date] 
     estimated_next_payment_date: Optional[date] = "" 
 
-class expenses_response(BaseModel):
+class ExpensesResponse(BaseModel):
     id: int
     name: str
     description: str
@@ -28,9 +28,9 @@ class expenses_response(BaseModel):
     fees: int #cuotas
     payment_date: date
     estimated_next_payment_date : Optional[date]
-    created: datetime
-    Update: datetime
+    create: datetime
+    update: datetime
 
-class expenses_pagination(BaseModel):
-    result: List[expenses_response]
+class ExpensesPagination(BaseModel):
+    result: List[ExpensesResponse]
     meta: pagination

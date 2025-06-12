@@ -8,7 +8,7 @@ from .database import db_connection, create_tables
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(application: FastAPI):
     # Antes de levantar el servidor
     config_loggin()
     if db_connection.connect():

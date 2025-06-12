@@ -1,6 +1,6 @@
 import logging
 
-from src.schema.expenses_schema import newexpenses_recuest, update_expenses_recuest, expenses_response, expenses_pagination
+from src.schema.expenses_schema import NewExpensesRecuest, UpdateExpensesRecuest, ExpensesPagination, ExpensesResponse
 from src.exceptions.server_exception import InternalServerError
 from src.services.expenses_service import ExpensesService
 from src.exceptions.client_exception import NotFound
@@ -13,7 +13,7 @@ class expensescontroller():
         self.expenses_service = expenses_service
 
 
-    async def get_paginated (self, offset: int, limit: int) -> expenses_pagination:
+    async def get_paginated (self, offset: int, limit: int) -> ExpensesPagination:
         try:
             return await self.expenses_service.get_paginated(offset, limit)
         except BaseHTTPExceptions as ex:
@@ -28,7 +28,7 @@ class expensescontroller():
             exception_code='EXPENSE_UNHANDLED_ERROR'
             )
 
-    async def create (self, data: newexpenses_recuest) -> expenses_response:
+    async def create (self, data: NewExpensesRecuest) -> ExpensesResponse:
         try:
             return await self.expenses_service.create(data)
         except Exception as ex:
@@ -39,7 +39,7 @@ class expensescontroller():
             )
         
 
-    async def search (self, expense_id: int) -> expenses_response:
+    async def search (self, expense_id: int) -> ExpensesResponse:
         try:
             return await self.expenses_service.search(expense_id)
         except NotFound as ex:
@@ -52,7 +52,7 @@ class expensescontroller():
             exception_code='EXPENSE_UNHANDLED_ERROR'
             )
 
-    async def update (self, expense_id: int, data: update_expenses_recuest) -> expenses_response:
+    async def update (self, expense_id: int, data: UpdateExpensesRecuest) -> ExpensesResponse:
         try:
             return await self.expenses_service.update(expense_id , data)
         except NotFound as ex:

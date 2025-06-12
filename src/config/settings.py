@@ -1,3 +1,4 @@
+from typing import ClassVar
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -9,10 +10,11 @@ class Settings(BaseSettings):
     LOG_DIR: str = "logs"
     DEBUG: bool = False
 
+    #Database
+    PATH_DATA: ClassVar[str] = "database\\fakedb.json"
+    DB_CONN: str
+
+
     #config inner class
     class Config():
         env_file = ".env"
-
-    #Database
-    PATH_DATA: str = "database\\fakedb.json"
-    DB_CONN: str

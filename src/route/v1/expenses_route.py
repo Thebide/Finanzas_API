@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Path, Query
 from datetime import date, datetime
 
-from src.schema.expenses_schema import newexpenses_recuest, update_expenses_recuest, expenses_response, expenses_pagination
+from src.schema.expenses_schema import NewExpensesRecuest, UpdateExpensesRecuest, ExpensesPagination, ExpensesResponse
 from .dependencies import expenses_controller
 
 expenses_router = APIRouter(
@@ -25,7 +25,7 @@ expenses_router = APIRouter(
 async def get_paginated(
     offset:Annotated[int, Query(ge=1)] = 1, 
     limit:Annotated[int, Query(ge=1 , le=50)] = 1,
-    )-> expenses_pagination:
+    )-> ExpensesPagination:
     return await expenses_controller.get_paginated(offset, limit)
 
 @expenses_router.post(
@@ -37,7 +37,7 @@ async def get_paginated(
             400: {"Description":"Revisar body request"},
         },      
 )
-async def create(new_expenses: newexpenses_recuest) -> expenses_response:
+async def create(new_expenses: NewExpensesRecuest) -> ExpensesResponse:
     return await expenses_controller.create(new_expenses)
 
 
@@ -62,7 +62,7 @@ async def get_by_id(
         "payment_date": date,
         "estimated_next_payment_date" : date,
         "created": datetime,
-        "Update": datetime,
+        "update": datetime,
     }
 
 
@@ -76,8 +76,8 @@ async def get_by_id(
         )
 async def update_by_id(
     expense_id: Annotated[int, Path(ge=1, description= "ID del gasto a buscar", title="ID del gasto")],
-    update_expense: update_expenses_recuest,
-    ) -> expenses_response:
+    update_expense: UpdateExpensesRecuest,
+    ) -> ExpensesResponse:
     return {
         "id": expense_id,
         "name": str,
@@ -87,7 +87,7 @@ async def update_by_id(
         "payment_date": date,
         "estimated_next_payment_date": date,
         "created": datetime,
-        "Update": datetime,
+        "update": datetime,
     }
 
 

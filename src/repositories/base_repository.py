@@ -20,8 +20,8 @@ class BaseRepository(ABC):
     
     async def create(self, data: dict) -> dict:
         data["id"] = await self._netx_id()
-        data["Create_at"] = await datetime.now().isoformat
-        data["Update_at"] = await datetime.now().isoformat
+        data["create"] = datetime.now().isoformat()
+        data["update"] = datetime.now().isoformat()
         db = await self._read_all()
         db.append(data)
         await self._update_db(db)
@@ -39,7 +39,7 @@ class BaseRepository(ABC):
         for index, item in enumerate(db):
             if all(item.get(key) == value for key, value in criteria.items()):
                 item.update(data)
-                item['updated_at'] = datetime.now().isoformat()
+                item['update'] = datetime.now().isoformat()
                 await self._update_db(db)
                 return item
         return None
