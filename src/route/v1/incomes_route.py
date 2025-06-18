@@ -1,6 +1,5 @@
 from typing import Annotated
 from fastapi import APIRouter, Path, Query
-from datetime import date, datetime
 
 from src.schema.incomes_schema import newincomes_recuest, update_incomes_recuest, incomes_response, incomes_pagination
 from .dependencies import incomes_controller
@@ -26,25 +25,7 @@ async def get_paginated(
     offset:Annotated[int, Query(gr=0)] = 0, 
     limit:Annotated[int, Query(ge=1 , le=50)] = 1,
     )-> incomes_pagination:
-    return {
-        "results": 
-            [
-            {
-                "id": int,
-                "name": str,
-                "desciption": str,
-                "quantity": int,
-                "created": date,
-                "update": date,
-            }
-            ],
-        "metadata": {
-            "concurrent_page": offset,
-            "items_per_page": limit,
-            "total_pages": int,
-            "total_items": int,
-        }
-    }
+    return await incomes_controller.get_paginated(offset, limit)
 
 @incomes_router.post(
         "",
@@ -69,16 +50,8 @@ async def create(new_incomes: newincomes_recuest) -> incomes_response:
     )
 async def get_by_id(
     incomes_id: Annotated[int, Path(ge=1, description= "ID del ingreso a buscar", title="ID del ingreso")],
-    ):
-    # todo: filtrado por id
-    return {
-        "id": incomes_id,
-        "name": str,
-        "desciption": str,
-        "quantity": int,
-        "created": date,
-        "update": date,
-    }
+    )-> incomes_response:
+    return await incomes_controller.search(incomes_id)
 
 
 @incomes_router.patch(
@@ -93,14 +66,7 @@ async def update_by_id(
     incomes_id: Annotated[int, Path(ge=1, description= "ID del ingreso a buscar", title="ID del ingreso")],
     update_incomes: update_incomes_recuest,
     ) -> incomes_response:
-    return {
-        "id": incomes_id,
-        "name": str,
-        "desciption": str,
-        "quantity": int,
-        "created": date,
-        "update": date,
-    }
+    return await incomes_controller.update(incomes_id, update_incomes)
 
 
 @incomes_router.delete(
@@ -113,4 +79,4 @@ async def update_by_id(
         },
         )
 async def delete_by_id(incomes_id: Annotated[int, Path(ge=1, description= "ID del ingreso a buscar", title="ID del ingreso")],) -> None:
-    return None
+    return await incomes_controller.delete(incomes_id)

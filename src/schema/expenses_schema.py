@@ -1,4 +1,4 @@
-from typing import Optional,Annotated,List
+from typing import Optional,List
 from datetime import date,datetime
 
 from pydantic import BaseModel, Field
@@ -10,15 +10,21 @@ class NewExpensesRecuest(BaseModel):
     quantity: float = Field(ge=1) #superior a 1
     fees : Optional[int] = 0  #cuotas
     payment_date: date 
-    estimated_next_payment_date: Optional[date] = "1999-01-01" 
+    estimated_next_payment_date: Optional[date] = None
+    model_config = {
+        "from_attributes": True
+    }
 
 class UpdateExpensesRecuest(BaseModel):
-    name: Optional[str]
-    description: Optional[str] = Field(..., min_length=2, max_length=100)
+    name: Optional[str] = Field(min_length=2, max_length=100)
+    description: Optional[str] = Field(min_length=2, max_length=100)
     quantity: Optional[float] = Field(ge=1) #superior a 1
     fees : Optional[int] = 0  #cuotas
-    payment_date: Optional[date] 
-    estimated_next_payment_date: Optional[date] = "" 
+    payment_date: Optional[date] = None
+    estimated_next_payment_date: Optional[date] = None 
+    model_config = {
+        "from_attributes": True
+    }
 
 class ExpensesResponse(BaseModel):
     id: int
@@ -27,9 +33,12 @@ class ExpensesResponse(BaseModel):
     quantity: float #superior 1
     fees: int #cuotas
     payment_date: date
-    estimated_next_payment_date : Optional[date]
+    estimated_next_payment_date : Optional[date] = None
     create: datetime
     update: datetime
+    model_config = {
+        "from_attributes": True
+    }
 
 class ExpensesPagination(BaseModel):
     result: List[ExpensesResponse]

@@ -42,11 +42,11 @@ class incomescontroller():
         try:
             return await self.incomes_service.search(income_id)
         except NotFound as ex:
-            logger.error(f"Error en la busqueda del ingreso #{income_id}.")
+            logger.error(f"Error en la busqueda del ingreso #{income_id}. {ex}")
             raise NotFound(message="INCOME_NOT_FOUND")
         except Exception as ex:
             raise InternalServerError(
-            message=f"Error de busqueda del ingreso N°{income_id}",
+            message=f"Error de busqueda del ingreso N°{income_id}. {ex}",
             exception_code='INCOME_UNHANDLED_ERROR'
             )
 
@@ -54,7 +54,7 @@ class incomescontroller():
         try:
             return await self.incomes_service.update(income_id , data)
         except NotFound as ex:
-            logger.error(f"Error en la busqueda del ingreso #{income_id}.")
+            logger.error(f"Error en la busqueda del ingreso #{income_id}. {ex}")
             raise NotFound(message="INCOME_NOT_FOUND")
         except Exception as ex:
             raise InternalServerError(
@@ -66,10 +66,10 @@ class incomescontroller():
         try:
             return await self.incomes_service.delete(income_id)
         except NotFound as ex:
-            logger.error(f"Error en la busqueda del ingreso #{income_id}.")
+            logger.error(f"Error en la busqueda del ingreso #{income_id}. {ex}")
             raise NotFound(message="INCOME_NOT_FOUND")
         except Exception as ex:
             raise InternalServerError(
-            message=f"Error de eliminación del ingreso N°{income_id}",
+            message=f"Error de eliminación del ingreso N°{income_id}. {ex}",
             exception_code='INCOME_UNHANDLED_ERROR'
             )

@@ -43,12 +43,12 @@ class expensescontroller():
         try:
             return await self.expenses_service.search(expense_id)
         except NotFound as ex:
-            logger.error(f"Error en la busqueda del gasto #{expense_id}.")
+            logger.error(f"Error en la busqueda del gasto #{expense_id}. {ex}")
             raise NotFound(message="EXPENSE_NOT_FOUND")
         except Exception as ex:
-            logger.critical("Error no contemplado en search_expenses")
+            logger.critical(f"Error no contemplado en search_expenses. {ex}")
             raise InternalServerError(
-            message=f"Error de busqueda del gasto N°{expense_id}",
+            message=f"Error de busqueda del gasto N°{expense_id}. {ex}",
             exception_code='EXPENSE_UNHANDLED_ERROR'
             )
 
@@ -56,12 +56,12 @@ class expensescontroller():
         try:
             return await self.expenses_service.update(expense_id , data)
         except NotFound as ex:
-            logger.error(f"Error en la actualización del gasto #{expense_id}.")
+            logger.error(f"Error en la actualización del gasto #{expense_id}. {ex}")
             raise NotFound(message="EXPENSE_NOT_FOUND")
         except Exception as ex:
-            logger.critical("Error no contemplado en update_expenses")
+            logger.critical(f"Error no contemplado en update_expenses. {ex}")
             raise InternalServerError(
-            message=f"Error de actualización del gasto N°{expense_id}, {data.name}: {str(ex)}",
+            message=(f"Error de actualización del gasto N°{expense_id}, {data.name}: {str(ex)}"),
             exception_code='EXPENSE_UNHANDLED_ERROR'
             )
 

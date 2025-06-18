@@ -53,17 +53,7 @@ async def get_by_id(
     expense_id: Annotated[int, Path(ge=1, description= "ID del gasto a buscar", title="ID del gasto")],
     ):
     # todo: filtrado por id
-    return {
-        "id": expense_id,
-        "name": str,
-        "desciption": str,
-        "quantity": int,
-        "fees": int,
-        "payment_date": date,
-        "estimated_next_payment_date" : date,
-        "created": datetime,
-        "update": datetime,
-    }
+    return await expenses_controller.search(expense_id)
 
 
 @expenses_router.patch(
@@ -78,17 +68,7 @@ async def update_by_id(
     expense_id: Annotated[int, Path(ge=1, description= "ID del gasto a buscar", title="ID del gasto")],
     update_expense: UpdateExpensesRecuest,
     ) -> ExpensesResponse:
-    return {
-        "id": expense_id,
-        "name": str,
-        "desciption": str,
-        "quantity": int,
-        "fees": int,
-        "payment_date": date,
-        "estimated_next_payment_date": date,
-        "created": datetime,
-        "update": datetime,
-    }
+    return await expenses_controller.update(expense_id, update_expense)
 
 
 @expenses_router.delete(
@@ -101,4 +81,4 @@ async def update_by_id(
         },
         )
 async def delete_by_id(expense_id: Annotated[int, Path(ge=1, description= "ID del gasto a buscar", title="ID del gasto")],) -> None:
-    return None
+    return await expenses_controller.delete(expense_id)
